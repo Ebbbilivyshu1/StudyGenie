@@ -18,11 +18,6 @@ A full-stack AI-powered study companion application built with React and Node.js
   - Profile management
   - Quiz history tracking
 
-- 📁 **Multimodal Support**
-  - Text input
-  - File uploads (PDF, TXT)
-  - Image analysis (OCR)
-  - Audio/video content
 
 ## Tech Stack
 
