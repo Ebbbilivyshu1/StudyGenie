@@ -81,7 +81,8 @@ router.post('/signup', async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Signup Error:', error);
+        res.status(500).json({ message: error.message || 'Internal server error during signup' });
     }
 });
 
@@ -142,7 +143,8 @@ router.post('/login', async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Login Error:', error);
+        res.status(500).json({ message: error.message || 'Internal server error during login' });
     }
 });
 
@@ -173,7 +175,8 @@ router.post('/forgot-password', async (req, res) => {
             res.json({ message: 'Feature requires MongoDB to be installed' });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Forgot Password Error:', error);
+        res.status(500).json({ message: error.message || 'Internal server error' });
     }
 });
 
@@ -204,7 +207,8 @@ router.post('/reset-password', async (req, res) => {
             res.json({ message: 'Feature requires MongoDB to be installed' });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Reset Password Error:', error);
+        res.status(500).json({ message: error.message || 'Internal server error' });
     }
 });
 

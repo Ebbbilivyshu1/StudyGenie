@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Brain, Mail, Lock, User2 } from 'lucide-react';
+import { Brain, Mail, Lock, User2, Eye, EyeOff } from 'lucide-react';
+
 
 const Signup = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const { signup } = useAuth();
@@ -16,6 +18,15 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+
+        // Temporary debugging log
+        console.log('Signup Attempt:', { 
+            name, 
+            email, 
+            passwordLength: password.length, 
+            confirmPasswordLength: confirmPassword.length,
+            match: password === confirmPassword 
+        });
 
         if (password !== confirmPassword) {
             setError('Passwords do not match');
@@ -33,7 +44,8 @@ const Signup = () => {
             await signup(name, email, password);
             navigate('/home');
         } catch (err) {
-            setError(err.response?.data?.message || 'Signup failed');
+            console.error('Signup Error:', err);
+            setError(err.response?.data?.message || 'Signup failed. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -90,13 +102,24 @@ const Signup = () => {
                         <div className="relative">
                             <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="input-field pl-10"
+                                className="input-field pl-10 pr-10"
                                 placeholder="••••••••"
                                 required
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 focus:outline-none"
+                            >
+                                {showPassword ? (
+                                    <EyeOff className="w-5 h-5" />
+                                ) : (
+                                    <Eye className="w-5 h-5" />
+                                )}
+                            </button>
                         </div>
                     </div>
 
@@ -105,7 +128,7 @@ const Signup = () => {
                         <div className="relative">
                             <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 className="input-field pl-10"

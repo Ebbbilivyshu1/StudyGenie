@@ -38,10 +38,12 @@ app.get('/api/health', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error('Server error:', err);
+    console.error('Unhandled Server Error:', err);
     res.status(500).json({
-        message: 'Internal server error',
-        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+        message: 'Something went wrong!',
+        // Only return error details in development
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined,
+        code: err.code || 'INTERNAL_ERROR'
     });
 });
 
@@ -51,9 +53,15 @@ app.use((req, res) => {
 });
 
 // Start server
+// Start server
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📚 AI Study Companion Backend v1.0`);
-    console.log(`💾 Storage: ${global.useMongoDb ? 'MongoDB' : 'In-Memory (temporary)'}`);
-});
+
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`🚀 Server running on http://localhost:${PORT}`);
+        console.log(`📚 AI Study Companion Backend v1.0`);
+        console.log(`💾 Storage: ${global.useMongoDb ? 'MongoDB' : 'In-Memory (temporary)'}`);
+    });
+}
+
+module.exports = app;
