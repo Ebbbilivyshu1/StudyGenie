@@ -51,6 +51,9 @@ app.use((err, req, res, next) => {
 app.use((req, res) => {
     res.status(404).json({ message: 'Route not found' });
 });
+app.get('/', (req, res) => {
+  res.send('AI Study Companion API running');
+});
 
 // Start server
 // Start server
